@@ -1,7 +1,7 @@
 var express = require("express"),
   app = express();
 
-var db = require("./database/models");
+var db = require("./database");
 
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
