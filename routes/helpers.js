@@ -2,9 +2,9 @@ var helpers = {};
 var db = require("../database");
 
 // root Route
-helpers.findCampgrounds = function(req, res) {
+helpers.findBlogs = function(req, res) {
   // Get all campgrounds from DB
-  db.campground.find({}, function(err, allCampgrounds) {
+  db.Blogs.find({}, function(err, allCampgrounds) {
     if (err) {
       console.log(err);
     } else {
