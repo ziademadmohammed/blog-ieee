@@ -23,6 +23,9 @@ var bodyParser = require("body-parser");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+var routes = require("./routes/blogRoutes");
+app.use(routes);
+
 app.get("/", function(req, res) {
   res.render("landing");
 });
@@ -32,8 +35,8 @@ app.get("/blog", function(req, res) {
 // username
 app.use(function(req, res, next) {
   res.locals.currentuser = req.user;
-  res.locals.error = req.flash("Error");
-  res.locals.success = req.flash("Success");
+  // res.locals.error = req.flash("Error");
+  // res.locals.success = req.flash("Success");
   next();
 });
 

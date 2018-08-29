@@ -2,61 +2,51 @@ var helpers = {};
 var db = require("../database");
 
 // root Route
-helpers.findBlogs = function(req, res) {
+helpers.getBlogs = function(req, res) {
   // Get all campgrounds from DB
-  db.Blogs.find({}, function(err, allCampgrounds) {
+
+  db.blog.find({}, function(err, blogs) {
     if (err) {
       console.log(err);
     } else {
-      res.render("campgrounds/index", {
-        campgrounds: allCampgrounds,
-        page: "campgrounds"
-      });
+      res.render("blog", { blogs: blogs });
     }
   });
 };
 // ======================== campground routes
 // create route  , post to /campgrounds
-helpers.insertCampground = function(req, res) {
+helpers.insertBlog = function(req, res) {
   // get data from form and add to campgrounds array
-  var newCampground = {
-    name: req.body.name,
-    image: req.body.image,
-    description: req.body.description,
-    price: req.body.price,
-    author: {
-      username: req.user.username,
-      id: req.user._id
-    }
-  };
-  // Create a new campground and save to DB
-  db.campground.create(newCampground, function(err, newlyCreated) {
+  var newBlog = req.body.post;
+  // // Create a new campground and save to DB
+  db.blog.create(newBlog, function(err, newlyCreated) {
     if (err) {
       console.log(err);
     } else {
       // console.log(newlyCreated._id);
-      req.user.posts.push(newlyCreated);
-      req.user.save();
+      // req.user.posts.push(newlyCreated);
+      // req.user.save();
       //redirect back to campgrounds page
-      res.redirect("/campgrounds");
+      res.redirect("/blog");
     }
   });
 };
 // Show Campground information
-helpers.showCampgroundInfo = function(req, res) {
+helpers.newPost = function(req, res) {
   //find the campground with provided ID
-  db.campground
-    .findById(req.params.id)
-    .populate("comments")
-    .exec(function(err, foundCampground) {
-      if (err) {
-        console.log(err);
-      } else {
-        // console.log(foundCampground)
-        //render show template with that campground
-        res.render("campgrounds/show", { campground: foundCampground });
-      }
-    });
+  res.render("newBlog");
+  // db.campground
+  //   .findById(req.params.id)
+  //   .populate("comments")
+  //   .exec(function(err, foundCampground) {
+  //     if (err) {
+  //       console.log(err);
+  //     } else {
+  //       // console.log(foundCampground)
+  //       //render show template with that campground
+  //       res.render("campgrounds/show", { campground: foundCampground });
+  //     }
+  //   });
 };
 // edit Camp ground form /campgrpuns/:id/edit
 helpers.editCampgroundForm = function(req, res) {
