@@ -26,7 +26,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get("/", function(req, res) {
   res.render("landing");
 });
-
+app.get("/blog", function(req, res) {
+  res.render("blog");
+});
 // username
 app.use(function(req, res, next) {
   res.locals.currentuser = req.user;
