@@ -1,3 +1,7 @@
+var express = require("express"),
+  app = express();
+var db = require("../database");
+
 var passport = require("passport");
 var LocalStrategy = require("passport-local");
 app.use(passport.initialize());
