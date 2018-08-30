@@ -5,7 +5,7 @@ var blogSchema = new mongoose.Schema({
   image: String,
   description: String,
   createdAt: { type: Date, default: Date.now },
-  socity: String,
+  socities: [String],
   comments: [
     {
       type: mongoose.Schema.Types.ObjectId,

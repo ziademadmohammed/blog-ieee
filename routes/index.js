@@ -1,13 +1,13 @@
-var commentRoutes = require("./comments"),
-  staticPagesRoutes = require("./staticPages"),
-  authRoutes = require("./authRoutes");
+// var commentRoutes = require("./comments"),
+// staticPagesRoutes = require("./staticPages"),
+var authRoutes = require("./authRoutes");
 blogRoutes = require("./blogRoutes");
 
 var routes = {
   authRoutes: authRoutes,
-  staticPagesRoutes: campgroundRoutes,
-  commentRoutes: commentRoutes,
+
   blogRoutes: blogRoutes
 };
-
+// staticPagesRoutes: campgroundRoutes,
+// commentRoutes: commentRoutes,
 module.exports = routes;

@@ -1,15 +1,21 @@
 var helpers = {};
 var db = require("../database");
-
+module.exports = helpers;
 // root Route
 helpers.getBlogs = function(req, res) {
   // Get all campgrounds from DB
-
+  console.log(req.user);
   db.blog.find({}, function(err, blogs) {
     if (err) {
       console.log(err);
     } else {
-      res.render("blog", { blogs: blogs });
+      db.socity.find({}, function(err, socities) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.render("blog", { blogs: blogs, socities: socities });
+        }
+      });
     }
   });
 };
@@ -18,15 +24,17 @@ helpers.getBlogs = function(req, res) {
 helpers.insertBlog = function(req, res) {
   // get data from form and add to campgrounds array
   var newBlog = req.body.post;
+  var socities = req.body.socities.split(" ");
+  console.log(req.body);
+  console.log(socities);
   // // Create a new campground and save to DB
   db.blog.create(newBlog, function(err, newlyCreated) {
     if (err) {
       console.log(err);
     } else {
-      // console.log(newlyCreated._id);
-      // req.user.posts.push(newlyCreated);
-      // req.user.save();
-      //redirect back to campgrounds page
+      socities.forEach(function(item) {
+        newlyCreated.socities.push(item);
+      });
       res.redirect("/blog");
     }
   });
@@ -35,82 +43,78 @@ helpers.insertBlog = function(req, res) {
 helpers.newPost = function(req, res) {
   //find the campground with provided ID
   res.render("newBlog");
-  // db.campground
-  //   .findById(req.params.id)
-  //   .populate("comments")
-  //   .exec(function(err, foundCampground) {
-  //     if (err) {
-  //       console.log(err);
-  //     } else {
-  //       // console.log(foundCampground)
-  //       //render show template with that campground
-  //       res.render("campgrounds/show", { campground: foundCampground });
-  //     }
-  //   });
 };
-// edit Camp ground form /campgrpuns/:id/edit
-helpers.editCampgroundForm = function(req, res) {
-  db.campground.findById(req.params.id, function(err, found) {
+
+helpers.showBlogExpanded = function(req, res) {
+  // .populate("comments")
+  // .exec(
+  db.blog.findById(req.params.id, function(err, blog) {
     if (err) {
       console.log(err);
     } else {
-      res.render("campgrounds/edit", { campground: found });
+      // console.log(foundCampground)
+      //render show template with that campground
+      res.render("blog/show", { blog: blog });
+    }
+  });
+};
+// edit Camp ground form /campgrpuns/:id/edit
+helpers.editBlogForm = function(req, res) {
+  db.blog.findById(req.params.id, function(err, blog) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("edit", { blog: blog });
     }
   });
 };
 // edit campground put route
-helpers.editCampground = function(req, res) {
-  db.campground.findByIdAndUpdate(req.params.id, req.body.campground, function(
+helpers.editBlog = function(req, res) {
+  db.blog.findByIdAndUpdate(req.params.id, req.body.post, function(
     err,
     campground
   ) {
     if (err) {
       console.log(err);
     } else {
-      res.redirect("/campgrounds/" + req.params.id);
+      res.redirect("/blog");
+      // res.redirect("/blog/" + req.params.id);
     }
   });
 };
 // delete campground !
-helpers.deleteCampground = function(req, res) {
-  db.campground.findByIdAndDelete(req.params.id, function(err, result) {
+helpers.deleteBlog = function(req, res) {
+  db.blog.findByIdAndDelete(req.params.id, function(err, result) {
     if (err) {
       console.log(err);
     }
-    res.redirect("/campgrounds");
+    res.redirect("/blog");
   });
 };
-
-module.exports = helpers;
 
 // ============================== auth routes
 var passport = require("passport");
 
 // login post router
 helpers.passportLogin = passport.authenticate("local", {
-  successRedirect: "/campgrounds",
+  session: true,
+  successRedirect: "/blog",
   failureRedirect: "/login"
 });
 
 helpers.logout = function(req, res) {
-  req.flash("Success", "Logged out!");
+  // req.flash("Success", "Logged out!");
   req.logout();
-  res.redirect("/campgrounds");
+  res.redirect("/blog");
 };
 
 helpers.register = function(req, res) {
-  var newUser = new User(req.body.user);
-  if (req.body.admincode === "secretcode123") {
-    newUser.isAdmin = true;
-  }
-  if (req.body.avatar === "") {
-    newUser.avatar = "/pictures/people.png";
-  }
+  var newUser = new db.user(req.body.user);
   db.user.register(newUser, req.body.password, function(err, user) {
     if (err) {
       console.log(err);
-      req.flash("Error", err.message);
-      return res.render("register", { error: err.message });
+      // req.flash("Error", err.message);
+      return res.render("register");
     }
     res.redirect("/login");
   });

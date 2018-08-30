@@ -4,6 +4,10 @@ var db = require("../database");
 var middleware = require("../middleware/index.js");
 const helpers = require("./helpers");
 
+router.get("/", function(req, res) {
+  res.render("landing");
+});
+
 router
   .route("/blog")
   .get(helpers.getBlogs)
@@ -11,18 +15,14 @@ router
 
 router.get("/blog/new", helpers.newPost);
 
-// router
-//   .route("/blog/:id")
-//   .get(helpers.showCampgroundInfo) // SHOW - shows more info about one campground
-//   .put(middleware.isLoggedIn, middleware.isOwner, helpers.editCampground) // Update Campground Route
-//   .delete(middleware.isLoggedIn, middleware.isOwner, helpers.editCampground); // Delete Campground!
+router
+  .route("/blog/:id")
+  .get(helpers.showBlogExpanded) // SHOW - shows more info about one campground
+  .put(middleware.isLoggedIn, helpers.editBlog) // Update Campground Route
+  .delete(middleware.isLoggedIn, helpers.deleteBlog); // Delete Campground!
+// .delete(middleware.isLoggedIn, helpers.deleteBlog); // Delete Campground!
 //
 // // Edit Campground Route
-// router.get(
-//   "/blog/:id/edit",
-//   middleware.isLoggedIn,
-//   middleware.isOwner,
-//   helpers.editCampgroundForm
-// );
+router.get("/blog/:id/edit", middleware.isLoggedIn, helpers.editBlogForm);
 
 module.exports = router;

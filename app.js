@@ -5,6 +5,10 @@ var db = require("./database");
 
 app.use(express.static(__dirname + "/public"));
 
+//method override
+var methodOverride = require("method-override");
+app.use(methodOverride("_method"));
+
 var cookieParser = require("cookie-parser");
 app.use(cookieParser());
 //body-parsee
@@ -21,11 +25,7 @@ app.use(
   })
 );
 
-//method override
-var methodOverride = require("method-override");
-app.use(methodOverride("_method"));
-
-var port = process.env.PORT || 4000;
+var port = process.env.PORT || 9000;
 
 // require("./auth");
 var passport = require("passport");

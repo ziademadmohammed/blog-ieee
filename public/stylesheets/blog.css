@@ -1,3 +1,15 @@
 .container {
   margin-top: 15px;
 }
+.to-animate {
+  opacity: 0;
+}
+/* .subcategory {
+  display: none;
+} */
+.main-category {
+  transition: all 0.5s;
+}
+.subcategory {
+  transition: all 0.5s;
+}
