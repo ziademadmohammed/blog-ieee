@@ -16,9 +16,13 @@
                     <div class="card-block px-3">
                       <h4 class="card-title to-animate" style="margin-top:10px;"><%= blog.header %></h4>
                       <p class="card-text to-animate" style="padding-bottom:30px;"><%= blog.description.slice(0,100) %></p>
-                      <div class="class="card-text to-animate" style="position:absolute;bottom:0;"">
+                      <div class="class="card-text to-animate" style="position:absolute;bottom:5;"">
                         <% blog.socities.forEach(function(socity){ %>
-                        <a href="#">#<%= socity %></a>
+                          <form class="filterLinkForm" action="/blog/filter" method="post">
+                            <button class="filterLink btn btn-outline-success"  name="filter[<%= socity %>]" value="<%= socity %>">#<%= socity %></button>
+                            <!-- <a class="filterLink" href="#">#<%= socity %></a> -->
+                          </form>
+
                         <%})%>
                       </div>
 
@@ -45,51 +49,39 @@
         <!-- =====================Filter section ========================== -->
         <div class="col-md-3" style="margin-top:20px;">
           <h4>Filter:</h4>
-          <form class="animation-container" action="index.html" method="post">
+          <form id="filterform" class="animation-container" action="/blog/filter" method="post">
             <div class="accordion" id="filter">
               <% socities.forEach(function(socity,index){%>
                 <div class="card to-animate">
                   <div class="" id="heading<%=index%>">
 
                     <button class="btn btn-sucess collapsed" style="width:100%;" type="button" data-toggle="collapse" data-target="#collapse<%=index%>" aria-expanded="false" aria-controls="collapse<%=index%>">
-                      <input type="checkbox" name="" value="">   <%=socity.name%>
+                      <input type="checkbox" name="filter[<%=socity.name%>-main]" value="<%=socity.name%>">   <%=socity.name%></input>
+                      <% if (currentuser){%>
+                        <a class="btn btn-outline-warning btn-sm" href="/socity/<%= socity._id %>">edit</a>
+
+                        <form style="display:inline-block;margin-bottom:0;" class="" action="/socity/<%= socity._id %>?_method=DELETE" method="post">
+                          <input type="submit" class="btn btn-outline-danger btn-sm" value="delete">
+                          <!-- <button type="submit" class="btn btn-outline-danger btn-sm">delete</button> -->
+                        </form>
+
+                      <%}%>
                     </button>
                   </div>
                   <div class="collapse " id="collapse<%=index%>"  aria-labelledby="heading<%=index%>" data-parent="#filter" >
                     <div class="card-body">
                         <% socity.activities.forEach(function(activity,activityIndex){ %>
-                        <li class="list-group-item subcategory"><input type="checkbox" name="<%=socity.name%>-sub<%=activityIndex%>" value="">   <%= activity%></li>
+                        <li class="list-group-item subcategory"><input type="checkbox" name="filter[<%=activity%>]" value="<%=activity%>">   <%= activity%></li>
                         <%})%>
                     </div>
                   </div>
                 </div>
               <%})%>
-
-
-
             </div>
-
-
-
-            <!-- <ul class="list-group animation-container">
-              <ul class="list-group-item list-group-flush to-animate main-category"><input type="checkbox" class="main-category" name="CS" value="">   CS
-                <li class="list-group-item subcategory"><input type="checkbox" name="CS-sub" value="">SubCat</li>
-                <li class="list-group-item subcategory"><input type="checkbox" name="CS-sub" value="">SubCat</li>
-                <li class="list-group-item subcategory"><input type="checkbox" name="CS-sub" value="">SubCat</li>
-              </ul>
-              <ul class="list-group-item list-group-flush to-animate main-category"><input type="checkbox" class="main-category" name="RAS" value="">   Ras
-                <li class="list-group-item subcategory"><input type="checkbox" name="RAS-sub" value="">SubCat</li>
-                <li class="list-group-item subcategory"><input type="checkbox" name="RAS-sub" value="">SubCat</li>
-                <li class="list-group-item subcategory"><input type="checkbox" name="RAS-sub" value="">SubCat</li>
-              </ul>
-              <ul class="list-group-item list-group-flush to-animate main-category"><input type="checkbox" class="main-category" name="ETC" value="">   Etc
-                <li class="list-group-item subcategory"><input type="checkbox" name="ETC-sub" value="">SubCat</li>
-                <li class="list-group-item subcategory"><input type="checkbox" name="ETC-sub" value="">SubCat</li>
-                <li class="list-group-item subcategory"><input type="checkbox" name="ETC-sub" value="">SubCat</li>
-              </ul>
-
-            </ul>
-            <button type="submit" class="btn btn-success animated fadeInUp" style="width:100%;">Refine</button> -->
+            <% if (currentuser){%>
+              <a class="btn btn-outline-success btn-sm btn-block" href="/socity/new">ADD</a>
+            <%}%>
+            <button type="submit" class="btn btn-success btn-block" style=";display: none;">Filter</button>
           </form>
 
         </div>

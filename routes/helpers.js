@@ -19,6 +19,26 @@ helpers.getBlogs = function(req, res) {
     }
   });
 };
+
+helpers.getFilterdBogs = function(req,res){
+  console.log(req.body.filter);
+  var userFilter = req.body.filter
+  var arr = []
+  for(var key in userFilter){
+    if(userFilter.hasOwnProperty(key)){
+      arr.push(userFilter[key]);
+    }
+  }
+  db.blog.find({socities:{$in:arr}},function(err,found){
+    db.socity.find({}, function(err, socities) {
+      if (err) {
+        console.log(err);
+      } else {
+        res.render("blog", { blogs: found, socities: socities });
+      }
+    });
+  })
+}
 // ======================== campground routes
 // create route  , post to /campgrounds
 helpers.insertBlog = function(req, res) {
@@ -33,8 +53,10 @@ helpers.insertBlog = function(req, res) {
       console.log(err);
     } else {
       socities.forEach(function(item) {
+        console.log(item);
         newlyCreated.socities.push(item);
       });
+      newlyCreated.save();
       res.redirect("/blog");
     }
   });
@@ -60,6 +82,7 @@ helpers.showBlogExpanded = function(req, res) {
 };
 // edit Camp ground form /campgrpuns/:id/edit
 helpers.editBlogForm = function(req, res) {
+
   db.blog.findById(req.params.id, function(err, blog) {
     if (err) {
       console.log(err);
@@ -70,6 +93,7 @@ helpers.editBlogForm = function(req, res) {
 };
 // edit campground put route
 helpers.editBlog = function(req, res) {
+  req.body.post.socities = req.body.post.socities.split(" ")
   db.blog.findByIdAndUpdate(req.params.id, req.body.post, function(
     err,
     campground
@@ -91,6 +115,43 @@ helpers.deleteBlog = function(req, res) {
     res.redirect("/blog");
   });
 };
+//================================== socities
+
+helpers.newSocityForm = function(req,res){
+  res.render("socities/newSocity")
+}
+helpers.insertSocity = function(req,res){
+  req.body.socity.activities = req.body.socity.activities.split(" ")
+  db.socity.create(req.body.socity,function(err,created){
+    if(err){console.log(err);}
+    else{
+      res.redirect("/blog")
+    }
+  })
+}
+
+helpers.updateSocityForm = function(req,res){
+  db.socity.findById(req.params.id,function(err,found){
+    res.render("socities/editSocity",{socity : found})
+  })
+}
+
+helpers.updateSocity = function(req,res){
+  req.body.socity.activities = req.body.socity.activities.split(" ")
+  console.log(req.body.socity.activities);
+  db.socity.findByIdAndUpdate(req.params.id,req.body.socity,function(err,updated){
+    res.redirect("/blog")
+  })
+}
+helpers.deleteSocity = function(req, res) {
+  db.socity.findByIdAndDelete(req.params.id, function(err, result) {
+    if (err) {
+      console.log(err);
+    }
+    res.redirect("/blog");
+  });
+};
+
 
 // ============================== auth routes
 var passport = require("passport");

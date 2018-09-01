@@ -15,14 +15,27 @@ router
 
 router.get("/blog/new", helpers.newPost);
 
+router.post("/blog/filter",helpers.getFilterdBogs)
+
 router
   .route("/blog/:id")
-  .get(helpers.showBlogExpanded) // SHOW - shows more info about one campground
-  .put(middleware.isLoggedIn, helpers.editBlog) // Update Campground Route
-  .delete(middleware.isLoggedIn, helpers.deleteBlog); // Delete Campground!
-// .delete(middleware.isLoggedIn, helpers.deleteBlog); // Delete Campground!
-//
-// // Edit Campground Route
+  .get(helpers.showBlogExpanded) // SHOW - shows more info about one blog
+  .put(middleware.isLoggedIn, helpers.editBlog) // Update blog Route
+  .delete(middleware.isLoggedIn, helpers.deleteBlog); // Delete blog!
+
+// // Edit blog Route
 router.get("/blog/:id/edit", middleware.isLoggedIn, helpers.editBlogForm);
+
+// socities
+
+// router.route("/socity/edit/:id")
+router.route("/socity/new")
+  .get( middleware.isLoggedIn,helpers.newSocityForm)
+  .post( middleware.isLoggedIn,helpers.insertSocity)
+
+router.route("/socity/:id")
+  .get(helpers.updateSocityForm)
+  .put(helpers.updateSocity)
+  .delete(helpers.deleteSocity)
 
 module.exports = router;

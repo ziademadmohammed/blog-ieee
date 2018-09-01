@@ -13,3 +13,16 @@
 .subcategory {
   transition: all 0.5s;
 }
+.filterLinkForm{
+  display: inline;
+}
+.filterLink{
+  background-color: #FFF;
+  border-color: #FFF;
+  margin: 2px;
+  transition: 0.3s all;
+}
+.filterLink:hover{
+  color:#FFF;
+  border-color: #28a745;
+}
