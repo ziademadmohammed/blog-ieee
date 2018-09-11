@@ -1,0 +1,48 @@
+<% include ../partials/header %>
+<style media="screen">
+  /* #header-image{
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(<%= blog.image %>);
+    background-repeat:no-repeat;
+    background-size:cover;
+    height:67vh;
+    background-position: center;
+    display: block;
+  } */
+  #description-blog{
+    padding: 20px 10px 20px 0px;
+  }
+</style>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8" style="margin-top:20px">
+      <div class="card" >
+          <!--  ====================== card headder icon and basic info =========  -->
+
+            <div id="header-image" style="position:relative">
+              <img style="width:100%" src="<%= blog.image %>" alt="">
+              <h4 style="position:absolute;left:5px;bottom: 5px;color:#fff"><%= blog.header %></h4>
+            </div>
+
+            <div id="description-blog" class="card-block px-3">
+              <p class="card-text " style="padding-bottom:30px;"><%= blog.description %></p>
+            </div>
+
+
+          </div>
+
+        </div>
+
+
+      <div class="col-md-4" style="margin-top:20px">
+        <div class="card">
+          <img src="/images/cs-logo.png" class="card-img-top" alt="">
+          <h5 class="card-title" style="margin:10px 0 0 5px">CS Socity</h5>
+          <p class="card-text" style="margin:10px 0 20px 5px">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="btn btn-primary">See More!</a>
+        </div>
+        <a href="#" style="margin-top :10px;"class="btn btn-outline-success btn-block "> SignUp!</a>
+      </div>
+  </div>
+</div>
+
+<% include ../partials/footer %>

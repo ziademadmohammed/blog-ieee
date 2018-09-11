@@ -1,5 +1,5 @@
 <% include partials/header %>
-  <div class="container">
+  <div class="container" style="margin-bottom:100px">
 
     <div class="row ">
 
@@ -7,35 +7,36 @@
         <!-- ===================Posts Go Here ============================ -->
 <!-- https://placeholdit.imgix.net/~text?txtsize=38&txt=400%C3%97400&w=400&h=400 -->
           <% blogs.forEach(function(blog){ %>
-            <div class="card animation-container animated fadeIn" style="margin-top:20px;">
+            <div class="card animation-container animated fadeIn shadow" style="margin-top:20px;">
               <div class="row ">
-                <div class="col-md-4 to-animate">
+                  <div class="col-md-4 to-animate">
                     <img src="<%= blog.image %>" class="w-100">
                   </div>
                   <div class="col-md-8 px-3">
                     <div class="card-block px-3">
                       <h4 class="card-title to-animate" style="margin-top:10px;"><%= blog.header %></h4>
                       <p class="card-text to-animate" style="padding-bottom:30px;"><%= blog.description.slice(0,100) %></p>
-                      <div class="class="card-text to-animate" style="position:absolute;bottom:5;"">
-                        <% blog.socities.forEach(function(socity){ %>
-                          <form class="filterLinkForm" action="/blog/filter" method="post">
-                            <button class="filterLink btn btn-outline-success"  name="filter[<%= socity %>]" value="<%= socity %>">#<%= socity %></button>
-                            <!-- <a class="filterLink" href="#">#<%= socity %></a> -->
-                          </form>
 
-                        <%})%>
-                      </div>
+                        <div class="card-text to-animate" style="position:absolute;bottom:5;">
+                          <% blog.socities.forEach(function(socity){ %>
+                            <form class="filterLinkForm" action="/blog/filter" method="post">
+                              <button class="filterLink btn btn-outline-success"  name="filter[<%= socity %>]" value="<%= socity %>">#<%= socity %></button>
+                              <!-- <a class="filterLink" href="#">#<%= socity %></a> -->
+                            </form>
 
-                      <div class="" style="position:absolute;right:20;bottom:5;">
-                        <% if (currentuser){%>
-                          <form style="display:inline;" action="/blog/<%= blog._id %>?_method=DELETE" method="post">
-                            <button class="btn btn-outline-primary to-animate" type="submit" >Delete</button>
-                          </form>
+                          <%})%>
+                        </div>
 
-                          <a href="/blog/<%= blog._id %>/edit" class="btn btn-outline-danger to-animate" >Edit</a>
-                        <%}%>
-                        <a href="/blog/<%= blog._id %>" class="btn btn-primary to-animate" >Read More</a>
-                      </div>
+                        <div class="" style="position:absolute;right:20;bottom:5;">
+                          <% if (currentuser){%>
+                            <form style="display:inline;" action="/blog/<%= blog._id %>?_method=DELETE" method="post">
+                              <button class="btn btn-outline-primary to-animate" type="submit" >Delete</button>
+                            </form>
+
+                            <a href="/blog/<%= blog._id %>/edit" class="btn btn-outline-danger to-animate" >Edit</a>
+                          <%}%>
+                          <a href="/blog/<%= blog._id %>" class="btn btn-primary to-animate" >Read More</a>
+                        </div>
 
                     </div>
                   </div>
@@ -56,7 +57,7 @@
                   <div class="" id="heading<%=index%>">
 
                     <button class="btn btn-sucess collapsed" style="width:100%;" type="button" data-toggle="collapse" data-target="#collapse<%=index%>" aria-expanded="false" aria-controls="collapse<%=index%>">
-                      <input type="checkbox" name="filter[<%=socity.name%>-main]" value="<%=socity.name%>">   <%=socity.name%></input>
+                      <input type="checkbox"  name="filter[<%=socity.name%>-main]" value="<%=socity.name%>">   <%=socity.name%></input>
                       <% if (currentuser){%>
                         <a class="btn btn-outline-warning btn-sm" href="/socity/<%= socity._id %>">edit</a>
 
@@ -81,7 +82,7 @@
             <% if (currentuser){%>
               <a class="btn btn-outline-success btn-sm btn-block" href="/socity/new">ADD</a>
             <%}%>
-            <button type="submit" class="btn btn-success btn-block" style=";display: none;">Filter</button>
+            <button type="submit" class="btn btn-success btn-block" style="display: none;">Filter</button>
           </form>
 
         </div>

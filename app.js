@@ -26,7 +26,7 @@ app.use(
 );
 
 var port = process.env.PORT || 4444;
-
+var ip = process.env.IP || "192.168.1.9";
 // require("./auth");
 var passport = require("passport");
 var LocalStrategy = require("passport-local");
@@ -48,10 +48,9 @@ var routes = require("./routes");
 app.use(routes.authRoutes);
 app.use(routes.blogRoutes);
 
-app.listen(port, function() {
+app.listen(port,ip, function() {
   console.log(
     "The YelpCamp Server Has Started!",
-    process.env.PORT,
-    process.env.IP
+    ip,port
   );
 });

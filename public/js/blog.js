@@ -70,7 +70,6 @@ var submmitbutton = function(){
   var s =true;
   socities.each(function(index, socity) {
     var checkbox =$(socity).children("#heading" + index).children("button").children("input")
-    console.log(checkbox.prop('checked'));
     if(checkbox.prop('checked')){
       submitbtn.css('display', "block").addClass('animated fadeIn')
       s= false

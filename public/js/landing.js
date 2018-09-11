@@ -1,34 +1,37 @@
-// ========================= NAVBAR ==========================
-$(".navbar-link").on("mouseover", "a", function(event) {
-  $(this).toggleClass("animated pulse faster");
-  /* Act on the event */
-});
-$(".navbar-link").on("mouseleave", "a", function(event) {
-  $(this).toggleClass("animated pulse faster");
-  /* Act on the event */
-});
-// ========================= navbar scroll effect ======================
-$(window).scroll(function() {
-  let navbar = $("#navbar"),
-    scrollTop = $(this).scrollTop();
-  if (scrollTop <= 400) {
-    navbar.removeClass("bg-light fixed-top animated slideInDown");
-    navbar.css("position", "absolute");
-  } else if (scrollTop > 400) {
-    navbar.addClass("bg-light ");
-    setTimeout(function() {
-      navbar.addClass("fixed-top animated slideInDown");
-      navbar.css("position", "fixed");
-    });
-  }
-});
-// ========================== scroller =================================
 $(".carousel").carousel({
   interval: 2500,
   keyboard: false,
   pause: false
 });
-// ============================ about us ============================
+// $('body').scrollspy({ target: '#navbar' })
+
+
+// ========================= navbar scroll effect ======================
+$(window).scroll(function() {
+  let navbar = $("#navbar"),
+    scrollTop = $(this).scrollTop();
+  if (scrollTop < 400) {
+    navbar.waypoint(function(direction){
+      if(direction === "up" ){
+        navbar.removeClass(' animated fadeInDown')
+        navbar.addClass('animated fadeOut')
+
+        setTimeout(function(){
+          navbar.removeClass('nav-body fadeOut')
+          navbar.addClass('nav-head fadeIn ')
+        },200)
+
+      }
+    })
+    // navbar.removeClass('nav-body animated fadeInDown')
+    // navbar.addClass('nav-head animated fadeInUp')
+
+  } else if (scrollTop > 400) {
+      navbar.removeClass('nav-head animated fadeInUp')
+      navbar.addClass('nav-body  animated fadeInDown')
+  }
+});
+
 var aboutAnimate = function() {
   if ($("#about-us").length > 0) {
     $("#about-us .to-animate").each(function(k) {
@@ -88,24 +91,6 @@ var teamWayPoint = function() {
     );
   }
 };
-var smoothScroll = function() {
-  $(".nav-item a").each(function(index, el) {
-    if (this.hash !== "") {
-      console.log($(this.hash));
-      $(this).click(function(event) {
-        event.preventDefault();
-        var hash = this.hash;
-        $("html,body").animate(
-          {
-            scrollTop: $(hash).offset().top
-          },
-          800
-        );
-      });
-    }
-  });
-};
-
 var servicesAnimate = function() {
   if ($("#socities").length > 0) {
     $("#socities .to-animate").each(function(k) {
@@ -134,6 +119,23 @@ var servicesWayPoint = function() {
       { offset: "95%" }
     );
   }
+};
+
+var smoothScroll = function() {
+  $(".nav-item a").each(function(index, el) {
+    if (this.hash !== "") {
+      $(this).click(function(event) {
+        event.preventDefault();
+        var hash = this.hash;
+        $("html,body").animate(
+          {
+            scrollTop: $(hash).offset().top
+          },
+          800
+        );
+      });
+    }
+  });
 };
 
 $(function() {
