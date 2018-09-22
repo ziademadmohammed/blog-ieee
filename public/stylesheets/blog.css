@@ -26,3 +26,17 @@
   color:#FFF;
   border-color: #28a745;
 }
+.button-relative{
+  position: relative;
+  left: 55%
+}
+@media only screen and (max-width: 960px){
+  .button-relative{
+    left: 50%;
+  }
+}
+@media only screen and (max-width: 600px){
+  .button-relative{
+    left: 67%;
+  }
+}

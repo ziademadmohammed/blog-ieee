@@ -16,8 +16,8 @@
                     <div class="card-block px-3">
                       <h4 class="card-title to-animate" style="margin-top:10px;"><%= blog.header %></h4>
                       <p class="card-text to-animate" style="padding-bottom:30px;"><%= blog.description.slice(0,100) %></p>
-
-                        <div class="card-text to-animate" style="position:absolute;bottom:5;">
+                      <div class="row">
+                        <div class=" col-sm-6 card-text to-animate" >
                           <% blog.socities.forEach(function(socity){ %>
                             <form class="filterLinkForm" action="/blog/filter" method="post">
                               <button class="filterLink btn btn-outline-success"  name="filter[<%= socity %>]" value="<%= socity %>">#<%= socity %></button>
@@ -27,16 +27,19 @@
                           <%})%>
                         </div>
 
-                        <div class="" style="position:absolute;right:20;bottom:5;">
-                          <% if (currentuser){%>
-                            <form style="display:inline;" action="/blog/<%= blog._id %>?_method=DELETE" method="post">
-                              <button class="btn btn-outline-primary to-animate" type="submit" >Delete</button>
-                            </form>
+                        <div class="col-sm-6" >
+                          <div style="margin-bottom: 10px;">
+                            <% if (currentuser){%>
+                              <form style="display:inline;" action="/blog/<%= blog._id %>?_method=DELETE" method="post">
+                                <button class="btn btn-outline-primary to-animate" type="submit" >Delete</button>
+                              </form>
 
-                            <a href="/blog/<%= blog._id %>/edit" class="btn btn-outline-danger to-animate" >Edit</a>
-                          <%}%>
-                          <a href="/blog/<%= blog._id %>" class="btn btn-primary to-animate" >Read More</a>
+                              <a href="/blog/<%= blog._id %>/edit" class="btn btn-outline-danger to-animate" >Edit</a>
+                            <%}%>
+                            <a  href="/blog/<%= blog._id %>" class="btn button-relative btn-primary to-animate" >Read More</a>
                         </div>
+                        </div>
+                    </div>
 
                     </div>
                   </div>

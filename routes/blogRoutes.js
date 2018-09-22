@@ -3,6 +3,29 @@ var router = express.Router();
 var db = require("../database");
 var middleware = require("../middleware/index.js");
 const helpers = require("./helpers");
+//  Cloudinary !!!
+
+var multer = require('multer');
+var storage = multer.diskStorage({
+  filename: function(req, file, callback) {
+    callback(null, Date.now() + file.originalname);
+  }
+});
+var imageFilter = function (req, file, cb) {
+    // accept image files only
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+        return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+};
+var upload = multer({ storage: storage, fileFilter: imageFilter})
+
+var cloudinary = require('cloudinary');
+cloudinary.config({ 
+  cloud_name: 'ieee-blog', 
+  api_key: "893342911184496", 
+  api_secret: "msoKeX_cSVEhOn_OiQoZC4BYfOM"
+});
 
 router.get("/", function(req, res) {
   res.render("landing");
@@ -11,7 +34,7 @@ router.get("/", function(req, res) {
 router
   .route("/blog")
   .get(helpers.getBlogs)
-  .post(helpers.insertBlog);
+  .post(upload.single('image'),helpers.insertBlog);
 
 router.get("/blog/new", helpers.newPost);
 

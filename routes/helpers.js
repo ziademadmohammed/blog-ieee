@@ -1,6 +1,9 @@
 var helpers = {};
 var db = require("../database");
 module.exports = helpers;
+var cloudinary = require('cloudinary');
+
+
 // root Route
 helpers.getBlogs = function(req, res) {
   // Get all campgrounds from DB
@@ -42,24 +45,29 @@ helpers.getFilterdBogs = function(req,res){
 // ======================== campground routes
 // create route  , post to /campgrounds
 helpers.insertBlog = function(req, res) {
-  // get data from form and add to campgrounds array
-  var newBlog = req.body.post;
-  var socities = req.body.socities.split(" ");
-  console.log(req.body);
-  console.log(socities);
-  // // Create a new campground and save to DB
-  db.blog.create(newBlog, function(err, newlyCreated) {
-    if (err) {
-      console.log(err);
-    } else {
-      socities.forEach(function(item) {
-        console.log(item);
-        newlyCreated.socities.push(item);
-      });
-      newlyCreated.save();
-      res.redirect("/blog");
-    }
-  });
+  cloudinary.uploader.upload(req.file.path, function(result) {
+    req.body.post.image = result.secure_url;
+
+      // get data from form and add to campgrounds array
+    var newBlog = req.body.post;
+    var socities = req.body.socities.split(" ");
+
+    // // Create a new campground and save to DB
+    db.blog.create(newBlog, function(err, newlyCreated) {
+      if (err) {
+        console.log(err);
+      } else {
+        socities.forEach(function(item) {
+          console.log(item);
+          newlyCreated.socities.push(item);
+        });
+        newlyCreated.save();
+        res.redirect("/blog");
+      }
+    });
+  })
+
+  
 };
 // Show Campground information
 helpers.newPost = function(req, res) {
@@ -192,86 +200,5 @@ helpers.loadUserInfoPage = function(req, res) {
   });
 };
 
-function getposts(req, res, user, next) {
-  var posts = [];
-  user.posts.forEach(function(post) {
-    post = db.campground.findById(post, function(err, campground) {
-      posts.push(campground);
-      if (user.posts.length === posts.length) {
-        return next(req, res, posts, user);
-      }
-    });
-  });
-}
 
-function redirect(req, res, posts, user) {
-  res.render("user", { user: user, posts: posts });
-}
 
-// ============================== comment Routes
-
-helpers.newCommentRender = function(req, res) {
-  db.campground.findById(req.params.id, function(err, campground) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("comments/new.ejs", { campground: campground });
-    }
-  });
-};
-
-helpers.addNewComment = function(req, res) {
-  db.campground.findById(req.params.id, function(err, campground) {
-    if (err) {
-      console.log(err);
-    } else {
-      db.comment.create(req.body.comment, function(err, comment) {
-        if (err) {
-          console.log(err);
-        } else {
-          comment.author.id = req.user._id;
-          comment.author.username = req.user.username;
-          comment.save();
-          campground.comments.push(comment);
-          campground.save();
-          res.redirect("/campgrounds/" + campground._id);
-        }
-      });
-    }
-  });
-};
-
-helpers.editCommentTemplate = function(req, res) {
-  db.comment.findById(req.params.commentid, function(err, comment) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.render("comments/edit", {
-        campground_id: req.params.id,
-        comment: comment
-      });
-    }
-  });
-};
-
-helpers.editComment = function(req, res) {
-  db.comment.findByIdAndUpdate(req.params.commentid, req.body.comment, function(
-    err,
-    comment
-  ) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.redirect("/campgrounds/" + req.params.id);
-    }
-  });
-};
-
-helpers.deleteComment = function(req, res) {
-  db.comment.findByIdAndDelete(req.params.commentid, function(err, result) {
-    if (err) {
-      console.log(err);
-    }
-    res.redirect("back");
-  });
-};
