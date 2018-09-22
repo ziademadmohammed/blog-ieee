@@ -34,9 +34,9 @@ router.get("/", function(req, res) {
 router
   .route("/blog")
   .get(helpers.getBlogs)
-  .post(upload.single('image'),helpers.insertBlog);
+  .post(middleware.isLoggedIn,upload.single('image'),helpers.insertBlog);
 
-router.get("/blog/new", helpers.newPost);
+router.get("/blog/new", middleware.isLoggedIn,helpers.newPost);
 
 router.post("/blog/filter",helpers.getFilterdBogs)
 
@@ -57,8 +57,8 @@ router.route("/socity/new")
   .post( middleware.isLoggedIn,helpers.insertSocity)
 
 router.route("/socity/:id")
-  .get(helpers.updateSocityForm)
-  .put(helpers.updateSocity)
-  .delete(helpers.deleteSocity)
+  .get(middleware.isLoggedIn,helpers.updateSocityForm)
+  .put(middleware.isLoggedIn,helpers.updateSocity)
+  .delete(middleware.isLoggedIn,helpers.deleteSocity)
 
 module.exports = router;
