@@ -5,7 +5,6 @@
 
       <div class="col-md-9">
         <!-- ===================Posts Go Here ============================ -->
-<!-- https://placeholdit.imgix.net/~text?txtsize=38&txt=400%C3%97400&w=400&h=400 -->
           <% blogs.forEach(function(blog){ %>
             <div class="card animation-container animated fadeIn shadow" style="margin-top:20px;">
               <div class="row ">
@@ -31,13 +30,15 @@
                           <div style="margin-bottom: 10px;">
                             <% if (currentuser){%>
                               <form style="display:inline;" action="/blog/<%= blog._id %>?_method=DELETE" method="post">
-                                <button class="btn btn-outline-primary to-animate" type="submit" >Delete</button>
+                                <button style="padding:6 6 6 6" class="btn btn-outline-primary to-animate" type="submit" >Delete</button>
                               </form>
 
-                              <a href="/blog/<%= blog._id %>/edit" class="btn btn-outline-danger to-animate" >Edit</a>
-                            <%}%>
-                            <a  href="/blog/<%= blog._id %>" class="btn button-relative btn-primary to-animate" >Read More</a>
-                        </div>
+                              <a style="padding:6 6 6 6" href="/blog/<%= blog._id %>/edit" class="btn btn-outline-danger to-animate" >Edit</a>
+                              <a  href="/blog/<%= blog._id %>" class="btn  btn-primary to-animate" >Read More</a>
+                            <%} else{%>
+                              <a  href="/blog/<%= blog._id %>" class="btn  button-relative btn-primary to-animate" >Read More</a>
+                            <% } %>
+                          </div>
                         </div>
                     </div>
 
