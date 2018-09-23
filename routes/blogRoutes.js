@@ -28,7 +28,7 @@ cloudinary.config({
 });
 
 router.get("/", function(req, res) {
-  res.render("landing");
+  res.redirect("/blog");
 });
 
 router
