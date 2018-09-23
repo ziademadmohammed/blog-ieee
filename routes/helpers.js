@@ -44,63 +44,70 @@ helpers.getFilterdBogs = function(req,res){
 }
 // ======================== campground routes
 // create route  , post to /campgrounds
-helpers.insertBlog = function(req, res) {
-  cloudinary.uploader.upload(req.file.path, function(result) {
-    req.body.post.image = result.secure_url;
+helpers.insertBlog = async function(req, res) {
+  var image = await cloudinary.uploader.upload(req.file.path)
 
-      // get data from form and add to campgrounds array
-    var newBlog = req.body.post;
-    var socities = req.body.socities.split(" ");
+  req.body.post.image = image.secure_url;
+  var newBlog = req.body.post;
+  var socities = req.body.socities.split(" ");
 
-    // // Create a new campground and save to DB
-    db.blog.create(newBlog, function(err, newlyCreated) {
-      if (err) {
-        console.log(err);
-      } else {
-        socities.forEach(function(item) {
-          console.log(item);
-          newlyCreated.socities.push(item);
-        });
-        newlyCreated.save();
-        res.redirect("/blog");
-      }
-    });
-  })
+  db.blog.create(newBlog, function(err, newlyCreated) {
+    if (err) {
+      console.log(err);
+    } else {
+      socities.forEach(function(item) {
+        console.log(item);
+        newlyCreated.socities.push(item);
+      });
+      newlyCreated.save();
+      res.redirect("/blog");
+    }
+  });
 
-  
 };
 // Show Campground information
-helpers.newPost = function(req, res) {
+helpers.newPost = async function(req, res) {
+  var socities = await db.socity.find({})
   //find the campground with provided ID
-  res.render("newBlog");
+  console.log(socities);
+  
+  res.render("newBlog",{socities : socities});
 };
 
-helpers.showBlogExpanded = function(req, res) {
+helpers.showBlogExpanded = async function(req, res) {
   // .populate("comments")
   // .exec(
+  var blogs = await db.blog.findById(req.params.id)
+  // console.log(blogs);
+  var socity = await db.socity.findById(blogs.mainSocity[0])
+  
+  // console.log(socity);
   db.blog.findById(req.params.id, function(err, blog) {
     if (err) {
       console.log(err);
     } else {
       // console.log(foundCampground)
       //render show template with that campground
-      res.render("blog/show", { blog: blog });
+      res.render("blog/show", { blog: blog,socity:socity });
     }
   });
 };
 // edit Camp ground form /campgrpuns/:id/edit
-helpers.editBlogForm = function(req, res) {
+helpers.editBlogForm = async function(req, res) {
+  var socities = await db.socity.find({})
 
   db.blog.findById(req.params.id, function(err, blog) {
     if (err) {
       console.log(err);
     } else {
-      res.render("edit", { blog: blog });
+      res.render("edit", { blog: blog ,socities:socities});
     }
   });
 };
 // edit campground put route
 helpers.editBlog = function(req, res) {
+  console.log(req.body.post);
+  
   req.body.post.socities = req.body.post.socities.split(" ")
   db.blog.findByIdAndUpdate(req.params.id, req.body.post, function(
     err,

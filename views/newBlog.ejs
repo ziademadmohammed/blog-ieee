@@ -6,7 +6,7 @@
   </div>
 
     <div class="col-md-7 col-sm-10" style=" margin: 25px auto;">
-        <form action="/blog" method="POST" enctype="multipart/form-data">
+        <form id="newblogform" action="/blog" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <input class="form-control" type="text" name="post[header]" placeholder="name" required>
             </div>
@@ -16,7 +16,20 @@
                 <!-- <input class="form-control" type="text" name="post[image]" placeholder="image url"> -->
             </div>
             <div class="form-group">
-                <input class="form-control" type="text" name="socities" placeholder="socity" required>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <label class="input-group-text" for="inputGroupSelect01">Main Socity</label>
+                    </div>
+                    <select form="newblogform" name="post[mainSocity]" class="custom-select" id="inputGroupSelect01">
+                        <option selected>Choose...</option>
+                        <% socities.forEach(function(socity){ %>
+                            <option value="<%= socity._id %>"><%= socity.name %></option>
+                        <% }) %>
+                    </select>
+                  </div>
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" name="socities" placeholder="Activity" required>
             </div>
 
             <!-- <div class="form-group">
