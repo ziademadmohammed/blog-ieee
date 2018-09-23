@@ -78,7 +78,7 @@ app.use(routes.blogRoutes);
 
 app.listen(port,ip, function() {
   console.log(
-    "The YelpCamp Server Has Started!",
+    "The  Server Has Started!",
     ip,port
   );
 });

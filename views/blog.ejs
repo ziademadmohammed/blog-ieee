@@ -14,7 +14,7 @@
                   <div class="col-lg-8">
                     <div class="card-block " >
                       <h4 class="card-title to-animate" style="margin-top:10px;"><%= blog.header %></h4>
-                      <p class="card-text to-animate" style="margin-bottom:30px;"><%= blog.description.slice(0,100) %></p>
+                      <p class="card-text to-animate" style="margin-bottom:30px;"><%- blog.description.slice(0,100) %></p>
                       <div class="row" >
                         <div class=" col-sm-6 card-text to-animate" >
                           <% blog.socities.forEach(function(socity){ %>

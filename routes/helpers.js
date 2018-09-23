@@ -1,6 +1,9 @@
 var helpers = {};
 var db = require("../database");
 module.exports = helpers;
+var sanitizeHtml = require('sanitize-html');
+ 
+
 var cloudinary = require('cloudinary');
 
 
@@ -49,6 +52,7 @@ helpers.insertBlog = async function(req, res) {
 
   req.body.post.image = image.secure_url;
   var newBlog = req.body.post;
+  req.body.post.description = sanitizeHtml(req.body.post.description)
   var socities = req.body.socities.split(" ");
 
   db.blog.create(newBlog, function(err, newlyCreated) {
@@ -107,7 +111,7 @@ helpers.editBlogForm = async function(req, res) {
 // edit campground put route
 helpers.editBlog = function(req, res) {
   console.log(req.body.post);
-  
+  req.body.post.description = sanitizeHtml(req.body.post.description)
   req.body.post.socities = req.body.post.socities.split(" ")
   db.blog.findByIdAndUpdate(req.params.id, req.body.post, function(
     err,
