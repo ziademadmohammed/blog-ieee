@@ -61,7 +61,7 @@
                   <div class="" id="heading<%=index%>">
 
                     <button class="btn btn-sucess collapsed" style="width:100%;" type="button" data-toggle="collapse" data-target="#collapse<%=index%>" aria-expanded="false" aria-controls="collapse<%=index%>">
-                      <input type="checkbox"  name="filter[<%=socity.name%>-main]" value="<%=socity.name%>">   <%=socity.name%></input>
+                      <!-- <input type="checkbox"  name="filter[<%=socity.name%>-main]" value="<%=socity.name%>">   <%=socity.name%></input> --><%=socity.name%>
                       <% if (currentuser){%>
                         <a class="btn btn-outline-warning btn-sm" href="/socity/<%= socity._id %>">edit</a>
 
@@ -75,8 +75,13 @@
                   </div>
                   <div class="collapse " id="collapse<%=index%>"  aria-labelledby="heading<%=index%>" data-parent="#filter" >
                     <div class="card-body">
+                        <label><li id="<% socity.name + index %>" class="list-group-item subcategory"><input type="checkbox" name="all" value="<%= socity.name %>">   All</li></label>
+                       
+
+
                         <% socity.activities.forEach(function(activity,activityIndex){ %>
-                        <li class="list-group-item subcategory"><input type="checkbox" name="filter[<%=activity%>]" value="<%=activity%>">   <%= activity%></li>
+                        <label><li class="list-group-item subcategory"><input type="checkbox" name="filter[<%=activity%>]" value="<%=activity%>">   <%= activity%></li></label>
+                        
                         <%})%>
                     </div>
                   </div>

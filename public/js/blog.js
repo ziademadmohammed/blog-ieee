@@ -36,30 +36,35 @@ var filteritem = function() {
     socities.each(function(index, socity) {
       var heading = $(socity).children("#heading" + index)
       var collapse = $(socity).children("#collapse" + index)
-      var button = $(socity).children("#heading" + index).children("button")
-      var input =$(socity).children("#heading" + index).children("button").children("input")
-      var subinputs = $(collapse).children('div').children('li').children('input')
+      // var button = $(socity).children("#heading" + index).children("button")
+      var input = $(collapse).children("div").children('label').children("li").children("input[name='all']")
+      // $(socity).children("#heading" + index).children("button").children("input")
+      var subinputs = $(collapse).children('div').children('label').children('li').children('input')
 
-
-      input.on('click', function(event) {
-        // event.preventDefault();
-        /* Act on the event */
-        event.stopPropagation()
-        $(this).prop('checked',$(input).prop('checked')) // change checkboxstate
-        if($(input).prop('checked')){ // expand accordin card + mark sub element
-            collapse.collapse("show")
-            subinputs.each(function(index, el) {
-              $(el).prop("checked",true)
-            });
-        } else { // shrink accordin card + un-mark sub element
-          collapse.collapse("hide")
-          subinputs.each(function(index, el) {
-            $(el).prop("checked",false)
-          });
+      input.on("change",function(event){
+        
+        if ($(this).prop("checked")) {
+          subinputs.each(function(index,value){
+            $(this).prop("checked",true)
+          })
+        } else {
+          subinputs.each(function(index,value){
+            $(this).prop("checked",false)
+          })
         }
-
         submmitbutton()
-      });
+      })
+
+      subinputs.each(function(index,item){
+        if (index == 0){
+
+
+        } else {
+          $(item).on("change",function(event){
+            submmitbutton()
+          })
+       }
+      })
 
     });
 
@@ -67,16 +72,21 @@ var filteritem = function() {
 var submmitbutton = function(){
   var socities = $("#filter div.card");
   var submitbtn = $("#filterform").children('button')
-  var s =true;
+  var nothingSelected =true;
   socities.each(function(index, socity) {
-    var checkbox =$(socity).children("#heading" + index).children("button").children("input")
-    if(checkbox.prop('checked')){
-      submitbtn.css('display', "block").addClass('animated fadeIn')
-      s= false
-      return false;
-    }
+    var subinputs = $(socity).children("#collapse" + index).children('div').children('label').children('li').children('input')
+    subinputs.each(function(index,item){
+
+      if($(item).prop('checked')){
+        submitbtn.css('display', "block").addClass('animated fadeIn')
+        nothingSelected = false
+        // return false;
+      }
+
+    })
+    
   })
-  if (s){
+  if (nothingSelected){
     submitbtn.css('opacity', '0');
     setTimeout(function(){
       submitbtn.css('display', 'none');
