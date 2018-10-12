@@ -76,7 +76,7 @@ app.use(routes.blogRoutes);
 
 
 
-app.listen(process.env.PORT,process.env.IP, function() {
+app.listen(3000, function() {
   console.log(
     "The  Server Has Started!",
     process.env.IP,process.env.PORT

@@ -383,6 +383,15 @@ section .section-title {
     margin-bottom: 10px;
 }
 }
+
+.list-group-item{
+  background-color: #007b5e;
+  color: #eeeeee;
+  padding-left: 0px;
+}
+.list-group-item:nth-child(1){
+  border-top: none
+}
 /* ===================fotter========================= */
 #footer label {
 	color: #fff;
